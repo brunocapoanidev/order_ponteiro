@@ -2,75 +2,81 @@
 #include <stdlib.h>
 #include <time.h>
 
+// função pra criar o vetor com números aleatórios
+int* criarVetor(int tamanho) {
+    int *v;
+    v = malloc(tamanho * sizeof(int));
 
-int* gerarVetor(int tamanho) {
-    int *vetor = (int *)malloc(tamanho * sizeof(int));
-    if (vetor == NULL) {
-        printf("Erro ao alocar memória.\n");
+    if (v == NULL) {
+        printf("Erro ao alocar memória\n");
         exit(1);
     }
 
     for (int i = 0; i < tamanho; i++) {
-        *(vetor + i) = rand() % 100; 
+        v[i] = rand() % 100; // número de 0 até 99
     }
 
-    return vetor;
+    return v;
 }
 
-
-void imprimirVetor(int *vetor, int tamanho) {
+// função pra mostrar os valores
+void mostrar(int *vetor, int tamanho) {
     for (int i = 0; i < tamanho; i++) {
-        printf("%d ", *(vetor + i));
+        printf("%d ", vetor[i]);
     }
     printf("\n");
 }
 
-
-void ordenarCrescente(int *vetor, int tamanho) {
-    for (int i = 0; i < tamanho - 1; i++) {
-        for (int j = 0; j < tamanho - i - 1; j++) {
-            if (*(vetor + j) > *(vetor + j + 1)) {
-                int temp = *(vetor + j);
-                *(vetor + j) = *(vetor + j + 1);
-                *(vetor + j + 1) = temp;
+// ordenar do menor pro maior
+void ordenarCrescente(int *v, int t) {
+    int i, j, aux;
+    for (i = 0; i < t - 1; i++) {
+        for (j = 0; j < t - 1 - i; j++) {
+            if (v[j] > v[j+1]) {
+                aux = v[j];
+                v[j] = v[j+1];
+                v[j+1] = aux;
             }
         }
     }
 }
 
-
-void ordenarDecrescente(int *vetor, int tamanho) {
-    for (int i = 0; i < tamanho - 1; i++) {
-        for (int j = 0; j < tamanho - i - 1; j++) {
-            if (*(vetor + j) < *(vetor + j + 1)) {
-                int temp = *(vetor + j);
-                *(vetor + j) = *(vetor + j + 1);
-                *(vetor + j + 1) = temp;
+// ordenar do maior pro menor
+void ordenarDecrescente(int *v, int t) {
+    int i, j, aux;
+    for (i = 0; i < t - 1; i++) {
+        for (j = 0; j < t - 1 - i; j++) {
+            if (v[j] < v[j+1]) {
+                aux = v[j];
+                v[j] = v[j+1];
+                v[j+1] = aux;
             }
         }
     }
 }
 
 int main() {
-    srand(time(NULL)); 
+    int tam;
+    int *vet;
 
-    int tamanho;
+    srand(time(NULL)); // pra gerar números diferentes
+
     printf("Digite o tamanho do vetor: ");
-    scanf("%d", &tamanho);
+    scanf("%d", &tam);
 
-    int *vetor = gerarVetor(tamanho);
+    vet = criarVetor(tam);
 
-    printf("\nVetor gerado:\n");
-    imprimirVetor(vetor, tamanho);
+    printf("\nVetor aleatorio:\n");
+    mostrar(vet, tam);
 
-    ordenarCrescente(vetor, tamanho);
+    ordenarCrescente(vet, tam);
     printf("\nVetor em ordem crescente:\n");
-    imprimirVetor(vetor, tamanho);
+    mostrar(vet, tam);
 
-    ordenarDecrescente(vetor, tamanho);
+    ordenarDecrescente(vet, tam);
     printf("\nVetor em ordem decrescente:\n");
-    imprimirVetor(vetor, tamanho);
+    mostrar(vet, tam);
 
-    free(vetor); // libera a memória
+    free(vet); // liberar a memória
     return 0;
 }
